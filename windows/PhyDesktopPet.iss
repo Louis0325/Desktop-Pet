@@ -1,5 +1,5 @@
 #define AppName "Phy 桌寵"
-#define AppVersion "1.0.8"
+#define AppVersion "1.1.2"
 #define AppExe "PhyDesktopPet.exe"
 
 [Setup]
@@ -29,7 +29,7 @@ Name: "chinesetraditional"; MessagesFile: "installer\ChineseTraditional.isl"
 Name: "desktopicon"; Description: "建立桌面捷徑"; Flags: unchecked
 
 [Files]
-Source: "dist\{#AppExe}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\win-unpacked\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExe}"

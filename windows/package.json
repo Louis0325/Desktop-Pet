@@ -1,0 +1,40 @@
+{
+  "name": "phy-desktop-pet",
+  "version": "1.1.2",
+  "description": "Transparent Phy desktop pet with live JavaScript SVG animation",
+  "author": "Phy Desktop Pet",
+  "main": "desktop/main.cjs",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder --win portable --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "44.5.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.phy.desktop-pet",
+    "productName": "PhyDesktopPet",
+    "executableName": "PhyDesktopPet",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**/*",
+      "vendor/*.js",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "assets/phy.ico",
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "PhyDesktopPet.exe"
+    }
+  },
+  "dependencies": {
+    "koffi": "3.3.2"
+  }
+}

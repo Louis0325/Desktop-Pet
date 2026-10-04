@@ -21,7 +21,7 @@
 
   const VERSION = '0.1.0';
   const DEG = Math.PI / 180;
-  const num = n => Math.round(n * 100) / 100;
+  const num = n => Math.round(n * 10000) / 10000;
   const rot = (x, y, a) => {
     const c = Math.cos(a), s = Math.sin(a);
     return [x * c - y * s, x * s + y * c];

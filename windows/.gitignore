@@ -1,0 +1,4 @@
+# Dependencies are restored with npm ci.
+node_modules/
+# Local build artifacts remain mirrored; publish downloads through GitHub Releases.
+dist/
