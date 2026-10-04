@@ -13,6 +13,7 @@ from tkinter import messagebox
 import traceback
 
 from PIL import Image, ImageTk
+from pet_languages import menu_language
 
 
 APP_NAME = "PhyDesktopPet"
@@ -161,14 +162,16 @@ class PhyPet:
         self.label.bind("<MouseWheel>", self.mouse_wheel)
 
         self.menu = tk.Menu(self.root, tearoff=False)
+        self.menu_language, text = menu_language()
+        logging.info("Menu language: %s", self.menu_language)
         size_menu = tk.Menu(self.menu, tearoff=False)
-        for label, height in SIZES.items():
+        for label, height in zip(text[1:4], SIZES.values()):
             size_menu.add_command(label=label, command=lambda value=height: self.set_size(value))
-        self.menu.add_cascade(label="大小", menu=size_menu)
+        self.menu.add_cascade(label=text[0], menu=size_menu)
         self.dock_var = tk.BooleanVar(value=self.dock_taskbar)
-        self.menu.add_checkbutton(label="貼齊工作列（可往下拖）", variable=self.dock_var, command=self.toggle_dock)
+        self.menu.add_checkbutton(label=text[4], variable=self.dock_var, command=self.toggle_dock)
         self.menu.add_separator()
-        self.menu.add_command(label="結束", command=self.close)
+        self.menu.add_command(label=text[5], command=self.close)
 
         x = self.settings.get("x", self.root.winfo_screenwidth() - self.width - 48)
         y = self.settings.get("y", self.root.winfo_screenheight() - self.height - 80)
@@ -236,7 +239,7 @@ class PhyPet:
                 return source.convert("RGBA").resize(target, Image.Resampling.LANCZOS)
 
         self.frames = {
-            (x, y): [prepare(f"g{x}{y}_{frame}") for frame in range(8)]
+            (x, y): [prepare(f"g{x}{y}_{frame}") for frame in range(24)]
             for x in range(5) for y in range(3)
         }
         self.blink_frames = {(x, y): prepare(f"blink_{x}{y}") for x in range(5) for y in range(3)}
@@ -283,7 +286,7 @@ class PhyPet:
             visible = self.visible_position(x, y)
             if visible != (x, y):
                 self.position(*visible)
-        phase = (now - self.started) % 8
+        phase = ((now - self.started) % 8) * 3
         index = int(phase)
         gaze = self.gaze_direction(min(now - self.last_tick, 0.2))
         self.last_tick = now
@@ -294,7 +297,7 @@ class PhyPet:
         else:
             image = Image.blend(
                 self.blend_gaze(self.frames, *gaze, index),
-                self.blend_gaze(self.frames, *gaze, (index + 1) % 8),
+                self.blend_gaze(self.frames, *gaze, (index + 1) % 24),
                 phase - index,
             )
         image.putalpha(image.getchannel("A").point(lambda value: 255 if value >= 128 else 0))
